@@ -2,7 +2,7 @@
 
 **This DatoCMS plugin allows to compute and define a field value based on other fields.**
 
-![](https://github.com/voorhoede/datocms-plugin-json-table/raw/master/docs/preview.gif)
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/preview.gif)
 
 ## Features
 
@@ -16,7 +16,7 @@ First add this plugin via DatoCMS Settings > Plugins > Add (`/admin/plugins/new`
 
 ## Contributing
 
-See [contributing.md](https://github.com/voorhoede/datocms-plugin-json-table/blob/master/contributing.md).
+See [contributing.md](https://github.com/voorhoede/datocms-plugin-computed-fields/blob/master/contributing.md).
 
 ## Credits
 
