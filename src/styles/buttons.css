@@ -1,0 +1,41 @@
+.button {
+  font-family: inherit;
+  font-size: .9em;
+  font-weight: 500;
+  line-height: inherit;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  background-color: transparent;
+  padding: .7em 1em;
+  border: 1px solid rgba(0, 0, 0, .05);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .3s cubic-bezier(.55, 0, .1, 1);
+}
+
+.button:hover,
+.button:focus {
+  background-color: rgba(0, 0, 0, .03);
+}
+
+.button--small {
+  font-size: .8em;
+}
+
+.button--danger {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.button > span {
+  position: relative;
+  top: .06em;
+  margin-left: .5em;
+}
+
+.button[disabled] {
+  border-width: 0;
+  color: rgba(0, 0, 0, .2);
+  background-color: var(--grey-color);
+  cursor: not-allowed;
+}

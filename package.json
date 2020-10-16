@@ -1,0 +1,130 @@
+{
+  "name": "datocms-plugin-computed-fields",
+  "homepage": "https://github.com/voorhoede/datocms-plugin-computed-fields",
+  "version": "0.0.1",
+  "description": "This plugin allows to compute and define a field value based on other fields",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development webpack-dev-server --port 5000",
+    "dist": "NODE_ENV=production webpack --progress",
+    "addToProject": "yo datocms-plugin:add-to-project",
+    "prepublishOnly": "rimraf lib dist && mkdir dist && npm run dist",
+    "lint": "eslint \"./src/*.{js,jsx}\"",
+    "test": "echo 1"
+  },
+  "keywords": [
+    "datocms",
+    "datocms-plugin",
+    "field-editor",
+    "json-field",
+    "text-field",
+    "boolean-field",
+    "float-field",
+    "integer-field",
+    "string-field",
+    "links-field",
+    "link-field",
+    "date-field",
+    "date-time-field",
+    "video-field",
+    "color-field",
+    "seo-field",
+    "lat-lon-field",
+    "computed",
+    "computed fields",
+    "fields",
+    "text",
+    "boolean"
+  ],
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "author": "Voorhoede <victor@voorhoede.nl>",
+  "license": "ISC",
+  "datoCmsPlugin": {
+    "title": "Computed Fields",
+    "previewImage": "docs/preview.gif",
+    "coverImage": "docs/cover.png",
+    "entryPoint": "dist/index.html",
+    "pluginType": "field_editor",
+    "fieldTypes": [
+      "json",
+      "text",
+      "boolean",
+      "float",
+      "integer",
+      "string",
+      "links",
+      "link",
+      "date",
+      "date_time",
+      "video",
+      "color",
+      "seo",
+      "lat_lon"
+    ],
+    "parameters": {
+      "global": [
+        {
+          "id": "developmentMode",
+          "label": "Development mode",
+          "type": "boolean",
+          "required": true,
+          "default": false,
+          "hint": "Shows debug messages in console"
+        },
+        {
+          "id": "apiToken",
+          "label": "Read only api token",
+          "type": "string",
+          "required": true,
+          "default": ""
+        }
+      ],
+      "instance": [
+        {
+          "id": "editFunction",
+          "label": "Show debug code editor",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "id": "defaultFunction",
+          "label": "Enter the default function",
+          "type": "text",
+          "default": ""
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.54",
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/register": "^7.0.0-beta.54",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^8.0.0-beta",
+    "css-loader": "^1.0.0",
+    "datocms-client": "^3.1.1",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-import-resolver-webpack": "^0.10.1",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "generator-datocms-plugin": "^1.0.24",
+    "html-webpack-inline-source-plugin": "^0.0.10",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.3",
+    "serve": "^11.3.2",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.10",
+    "yo": "^3.1.1"
+  },
+  "dependencies": {
+    "codemirror": "^5.57.0",
+    "html-webpack-tags-plugin": "^2.0.17"
+  }
+}
