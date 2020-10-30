@@ -1,83 +1,55 @@
-import codeEditor from './components/code-editor'
+import { createEditor } from './components/code-editor'
 import { SiteClient } from 'datocms-client'
+import createOutput, { updateElementValue } from './components/create-output'
 
 import './styles/_style.css'
 
 window.DatoCmsPlugin.init((plugin) => {
   plugin.startAutoResizer()
 
-  const fieldPath = plugin.getFieldValue(plugin.fieldPath)
-  let editor
+  const fieldType = plugin.field.attributes.field_type
   const code = plugin.parameters.instance.defaultFunction
-  const client = new SiteClient(plugin.parameters.global.apiToken)
-
-  Object.keys(plugin.fields).forEach((field) => {
-    const fieldName = plugin.fields[field].attributes.api_key
-    if (fieldName !== plugin.fieldPath) {
-      plugin.addFieldChangeListener(fieldName, () => {
-        executeComputedCode()
-      })
-    }
-  })
-
+  const datoClient = new SiteClient(plugin.parameters.global.apiToken)
   const main = document.createElement('main')
-  document.body.appendChild(main)
+  let editor
+
+  initPlugin()
 
   if (plugin.parameters.instance.editFunction) {
-    const button = document.createElement('button')
-    const codeSection = document.createElement('section')
-    const codeMirrorContainer = document.createElement('div')
-
-    codeSection.appendChild(codeMirrorContainer)
-    codeSection.classList.add('code-section')
-    codeSection.appendChild(button)
-
-    button.classList.add('button')
-    button.textContent = 'Execute code'
-    button.addEventListener('click', () => {
-      executeComputedCode()
-    })
-
-    main.appendChild(codeSection)
-    editor = codeEditor(codeMirrorContainer, code)
+    editor = createEditor(main, code, executeComputedCode)
   }
 
-  const input = document.createElement('input')
-  input.setAttribute('type', 'text')
-  input.setAttribute('readonly', true)
-  input.value = fieldPath.value
-  main.appendChild(input)
-  executeComputedCode(code)
+  createOutput(main, fieldType)
 
-  async function executeComputedCode() {
+  async function executeComputedCode(changedField) {
     const codeToExecute = editor ? editor.getValue() : code
     const evaluatedFunction = `return (async function() {${codeToExecute}})()`
 
-    const functionArgs = Object.keys(plugin.fields).reduce(
-      (acc, field) => {
-        const fieldName = plugin.fields[field].attributes.api_key
+    const functionArgs = Object.keys(plugin.fields).reduce((acc, field) => {
+      const fieldName = plugin.fields[field].attributes.api_key
 
-        if (fieldName !== plugin.fieldPath && acc.indexOf(fieldName) === -1) {
-          acc.push(fieldName)
-          return acc
-        } else {
-          return acc
-        }
-      }, [])
-
-    const functionParams = functionArgs.reduce(
-      (acc, fieldName) => {
-        const fieldValue = plugin.getFieldValue(fieldName)
-        acc.push(fieldValue)
-
+      if (fieldName !== plugin.fieldPath && acc.indexOf(fieldName) === -1) {
+        acc.push(fieldName)
         return acc
-      }, [])
+      } else {
+        return acc
+      }
+    }, [])
+
+    const functionParams = functionArgs.reduce((acc, fieldName) => {
+      const fieldValue = plugin.getFieldValue(fieldName)
+      acc.push(fieldValue)
+
+      return acc
+    }, [])
 
     functionArgs.push('getUpload')
     functionArgs.push('getModel')
+    functionArgs.push('changeField')
     functionArgs.push(evaluatedFunction)
     functionParams.push(getUpload)
     functionParams.push(getModel)
+    functionParams.push(changedField)
 
     const codeValue = Function.apply(null, functionArgs)
     const executedCode = await codeValue.apply(null, functionParams)
@@ -85,15 +57,30 @@ window.DatoCmsPlugin.init((plugin) => {
   }
 
   function saveComputedValue(updatedFieldPath) {
-    input.value = updatedFieldPath
-    plugin.setFieldValue(plugin.fieldPath, updatedFieldPath)
+    const updatedValue = updateElementValue(updatedFieldPath, fieldType)
+    plugin.setFieldValue(plugin.fieldPath, updatedValue)
   }
 
   function getUpload(uploadId) {
-    return client.uploads.find(uploadId)
+    return datoClient.uploads.find(uploadId)
   }
 
   function getModel(modelId) {
-    return client.items.find(modelId)
+    return datoClient.items.find(modelId)
+  }
+
+  function initPlugin() {
+    executeComputedCode()
+
+    Object.keys(plugin.fields).forEach((field) => {
+      const fieldName = plugin.fields[field].attributes.api_key
+      if (fieldName !== plugin.fieldPath) {
+        plugin.addFieldChangeListener(fieldName, () => {
+          executeComputedCode(fieldName)
+        })
+      }
+    })
+
+    document.body.appendChild(main)
   }
 })

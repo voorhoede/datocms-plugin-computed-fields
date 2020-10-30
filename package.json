@@ -1,7 +1,7 @@
 {
   "name": "datocms-plugin-computed-fields",
   "homepage": "https://github.com/voorhoede/datocms-plugin-computed-fields",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "This plugin allows to compute and define a field value based on other fields",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,8 @@
     "lat-lon-field",
     "computed",
     "computed fields",
+    "function",
+    "functions",
     "fields",
     "text",
     "boolean"
@@ -41,7 +43,7 @@
     "docs"
   ],
   "author": "Voorhoede <victor@voorhoede.nl>",
-  "license": "ISC",
+  "license": "MIT",
   "datoCmsPlugin": {
     "title": "Computed Fields",
     "previewImage": "docs/preview.gif",
