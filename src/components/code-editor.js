@@ -13,3 +13,22 @@ export default function codeEditor(container, code) {
     tabSize: 2,
   })
 }
+
+export function createEditor(main, code, executeComputedCode) {
+  const button = document.createElement('button')
+  const codeSection = document.createElement('section')
+  const codeMirrorContainer = document.createElement('div')
+
+  codeSection.appendChild(codeMirrorContainer)
+  codeSection.classList.add('code-section')
+  codeSection.appendChild(button)
+
+  button.classList.add('button')
+  button.textContent = 'Execute code'
+  button.addEventListener('click', () => {
+    executeComputedCode()
+  })
+
+  main.appendChild(codeSection)
+  return codeEditor(codeMirrorContainer, code)
+}
