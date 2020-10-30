@@ -7,16 +7,6 @@
   margin-bottom: 1rem;
 }
 
-.error-message {
-  line-height: 1.2;
-  margin-top: .375rem;
-  font-size: .75rem;
-  color: var(--danger-color);
-  margin-top: var(--spacing-default);
-}
-
-.input--error,
-.input--error[disabled][disabled],
-.input--error:focus {
-  border-color: var(--danger-color);
+textarea {
+  resize: none;
 }
