@@ -30,6 +30,7 @@ All code added in the plugin will be wrapped around an async function. This way 
 Always return the value a field requires. For example:
 * For a string it should be a string.
 * For the JSON field it should be a JSON object.
+* For a boolean it should be `true` or `false`
 
 When you are not returning the value a field requires it will give a DatoCMS error.
 
@@ -58,13 +59,13 @@ When you have added the field *Title*, in the function you can use the variable 
 
 For example: When there is an `uploadId` you can use this function to get all data for this model.
 ```js
-const title = await getModel(image.uploadId)
+const model = await getModel(image.uploadId)
 return model.title
 ```
 
 ## Plugin Fields
 
-All fields in this list can be used together with the computed fields plugin. The checked boxes are designed to show data in a user friendly manner.
+All fields in this list can be used together with the computed fields plugin. The checked values are designed to show data in a user friendly manner.
 
 - [x] JSON (json)
 - [x] Text (text)
