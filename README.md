@@ -1,12 +1,21 @@
 # DatoCMS plugin: Computed fields
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5599c96a-639f-4f82-8cc7-d03397ae2cd4/deploy-status)](https://app.netlify.com/sites/datocms-plugin-computed-fields/deploys)
-
 **This DatoCMS plugin allows to compute and define a field value based on other fields.**
 
-![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/preview.gif)
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin.png)
+
+> Used code:
+> ```JS
+> const newDate = new Date(date)
+> return `${title} | ${newDate.getFullYear()}
+> ```
 
 ## Features
+
+* Return specified values
+* Use all javascript functionality
+* Get a model and an upload with an ID
+* Have access to all fields on the page
 
 ## Configuration
 
@@ -14,11 +23,49 @@ First add this plugin via DatoCMS Settings > Plugins > Add (`/admin/plugins/new`
 
 ### Plugin settings
 
-#### Settings
+When adding the plugin you have to add a DatoCMS read only token in the general settings. This is necessary to be able to use two helper functions for returning uploads and models.
 
-## Road map
+All code added in the plugin will be wrapped around an async function. This way you can use the two helper functions with an await.
 
-All fields that are in the pipeline:
+Always return the value a field requires. For example:
+* For a string it should be a string.
+* For the JSON field it should be a JSON object.
+
+When you are not returning the value a field requires it will give a DatoCMS error.
+
+#### Show debug code editor
+
+> Only show this editor when you want to have a sandbox to help you make an usefull function.
+
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-debug-editor.png)
+
+**Only for testing purposes:**
+The value in this editor will not be saved. You copy this value and add it to the "Default function" option of this plugin.
+
+#### Enter the default function
+
+The value in this input will be wrapped around an async function. As soon as you add a return it will return that value.
+
+All fields of the page you added will be automatically added as variable using the *field ID*.
+
+When you have added the field *Title*, in the function you can use the variable `title` which would have the value of this field.
+
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-default-function.png)
+
+### Plugin helper functions
+
+`getModel` and `getUpload` are functions to use in the plugin.
+
+For example: When there is an `uploadId` you can use this function to get all data for this model.
+```js
+const title = await getModel(image.uploadId)
+return model.title
+```
+
+## Plugin Fields
+
+All fields in this list can be used together with the computed fields plugin. The checked boxes are designed to show data in a user friendly manner.
+
 - [x] JSON (json)
 - [x] Text (text)
 - [x] Boolean (boolean)
