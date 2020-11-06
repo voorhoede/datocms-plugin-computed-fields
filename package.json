@@ -1,14 +1,14 @@
 {
   "name": "datocms-plugin-computed-fields",
   "homepage": "https://github.com/voorhoede/datocms-plugin-computed-fields",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "This plugin allows to compute and define a field value based on other fields",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --port 5000",
     "build": "NODE_ENV=production webpack --progress",
     "addToProject": "yo datocms-plugin:add-to-project",
-    "prepublishOnly": "rimraf lib dist && mkdir dist && npm run dist",
+    "prepublishOnly": "rimraf lib dist && mkdir dist && npm run build",
     "lint": "eslint \"./src/*.{js,jsx}\"",
     "test": "echo 1"
   },
