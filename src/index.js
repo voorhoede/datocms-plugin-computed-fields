@@ -23,6 +23,11 @@ window.DatoCmsPlugin.init((plugin) => {
 
   async function executeComputedCode(changedField) {
     const codeToExecute = editor ? editor.getValue() : code
+
+    if (codeToExecute.indexOf(changedField) === -1) {
+      return
+    }
+
     const evaluatedFunction = `return (async function() {${codeToExecute}})()`
 
     const functionArgs = Object.keys(plugin.fields).reduce((acc, field) => {
@@ -45,7 +50,7 @@ window.DatoCmsPlugin.init((plugin) => {
 
     functionArgs.push('getUpload')
     functionArgs.push('getModel')
-    functionArgs.push('changeField')
+    functionArgs.push('changedField')
     functionArgs.push(evaluatedFunction)
     functionParams.push(getUpload)
     functionParams.push(getModel)
