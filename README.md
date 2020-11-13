@@ -1,6 +1,6 @@
 # DatoCMS plugin: Computed fields
 
-**This DatoCMS plugin allows to compute and define a field value based on other fields.**
+**This DatoCMS plugin allows to compute and define a field value based on other fields. This allows pretty “preview” values in the CMS (used in model overviews and for linked models). And moves logic from clients to a central place: the API.**
 
 ![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin.png)
 
@@ -53,9 +53,16 @@ When you have added the field *Title*, in the function you can use the variable 
 
 ![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-default-function.png)
 
+#### Changed fields
+
+When you change a field on the DatoCMS page there will be a variable available with the name of the field that changed.
+The variable `changedField` can be used throughout the code.
+
+Using `console.log(changedField)` will log the value of the field that has changed only if you use that field in your code. When you change a field that is not used in you code, the code will not be executed.
+
 ### Plugin helper functions
 
-`getModel` and `getUpload` are functions to use in the plugin.
+`getModel` and `getUpload` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.
 
 For example: When there is an `uploadId` you can use this function to get all data for this model.
 ```js
