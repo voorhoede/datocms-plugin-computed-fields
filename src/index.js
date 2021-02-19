@@ -12,12 +12,12 @@ window.DatoCmsPlugin.init((plugin) => {
   const datoClient = new SiteClient(plugin.parameters.global.apiToken)
   const main = document.createElement('main')
   let editor
-
-  initPlugin()
-
+  
   if (plugin.parameters.instance.editFunction) {
     editor = createEditor(main, code, executeComputedCode)
   }
+
+  initPlugin()
 
   createOutput(main, fieldType)
 
