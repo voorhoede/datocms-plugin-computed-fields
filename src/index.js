@@ -11,8 +11,9 @@ window.DatoCmsPlugin.init((plugin) => {
   const code = plugin.parameters.instance.defaultFunction
   const datoClient = new SiteClient(plugin.parameters.global.apiToken)
   const main = document.createElement('main')
+  document.body.appendChild(main)
   let editor
-  
+
   if (plugin.parameters.instance.editFunction) {
     editor = createEditor(main, code, executeComputedCode)
   }
@@ -24,7 +25,7 @@ window.DatoCmsPlugin.init((plugin) => {
   async function executeComputedCode(changedField) {
     const codeToExecute = editor ? editor.getValue() : code
 
-    if (codeToExecute.indexOf(changedField) === -1) {
+    if (changedField && codeToExecute.indexOf(changedField) === -1) {
       return
     }
 
@@ -62,6 +63,7 @@ window.DatoCmsPlugin.init((plugin) => {
   }
 
   function saveComputedValue(updatedFieldPath) {
+    console.log('hier')
     const updatedValue = updateElementValue(updatedFieldPath, fieldType)
     plugin.setFieldValue(plugin.fieldPath, updatedValue)
   }
@@ -85,7 +87,5 @@ window.DatoCmsPlugin.init((plugin) => {
         })
       }
     })
-
-    document.body.appendChild(main)
   }
 })
