@@ -53,13 +53,6 @@ When you have added the field *Title*, in the function you can use the variable 
 
 ![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-default-function.png)
 
-#### Changed fields
-
-When you change a field on the DatoCMS page there will be a variable available with the name of the field that changed.
-The variable `changedField` can be used throughout the code.
-
-Using `console.log(changedField)` will log the value of the field that has changed only if you use that field in your code. When you change a field that is not used in you code, the code will not be executed.
-
 ### Plugin helper functions
 
 `getModel` and `getUpload` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.
@@ -69,6 +62,21 @@ For example: When there is an `uploadId` you can use this function to get all da
 const model = await getModel(image.uploadId)
 return model.title
 ```
+
+### Reserved words
+
+#### Changed fields
+
+When you change a field on the DatoCMS page there will be a variable available with the name of the field that changed.
+The variable `changedField` can be used throughout the code.
+
+Using `console.log(changedField)` will log the value of the field that has changed only if you use that field in your code.
+
+When you change a field that is not used in your code, the code will not be executed.
+
+#### Locale
+
+`locale` will return the current locale you are working with. If localization is turned on it will dynamically return the correct locale.
 
 ## Plugin Fields
 
