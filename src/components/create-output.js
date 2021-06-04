@@ -1,7 +1,6 @@
 let element
 
 export default function createOutput(main, fieldType) {
-  console.log(fieldType)
   switch (fieldType) {
     case 'text':
     case 'json': {
