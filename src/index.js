@@ -7,6 +7,7 @@ import './styles/_style.css'
 window.DatoCmsPlugin.init((plugin) => {
   plugin.startAutoResizer()
 
+  const locale = plugin.locale
   const fieldType = plugin.field.attributes.field_type
   const code = plugin.parameters.instance.defaultFunction
   const datoClient = new SiteClient(plugin.parameters.global.apiToken)
@@ -52,10 +53,12 @@ window.DatoCmsPlugin.init((plugin) => {
     functionArgs.push('getUpload')
     functionArgs.push('getModel')
     functionArgs.push('changedField')
+    functionArgs.push('locale')
     functionArgs.push(evaluatedFunction)
     functionParams.push(getUpload)
     functionParams.push(getModel)
     functionParams.push(changedField)
+    functionParams.push(locale)
 
     const codeValue = Function.apply(null, functionArgs)
     const executedCode = await codeValue.apply(null, functionParams)
@@ -63,7 +66,6 @@ window.DatoCmsPlugin.init((plugin) => {
   }
 
   function saveComputedValue(updatedFieldPath) {
-    console.log('hier')
     const updatedValue = updateElementValue(updatedFieldPath, fieldType)
     plugin.setFieldValue(plugin.fieldPath, updatedValue)
   }
