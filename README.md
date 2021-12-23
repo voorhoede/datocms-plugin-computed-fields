@@ -55,12 +55,24 @@ When you have added the field *Title*, in the function you can use the variable 
 
 ### Plugin helper functions
 
-`getModel` and `getUpload` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.
+`getModel(modelId)`, `getUpload(uploadId)` and `getFieldValue(formValues, fieldPath)` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.
 
-For example: When there is an `uploadId` you can use this function to get all data for this model.
+For example: When there is an `uploadId` you can use this function to get all data for this upload.
 ```js
-const model = await getModel(image.uploadId)
+const upload = await getUpload(uploadId)
+return upload.title
+```
+
+For example: When there is an `modelId` you can use this function to get all data for this model.
+```js
+const model = await getModel(modelId)
 return model.title
+```
+
+For example: To get the value of a field you can use the datoCmsPlugin variable.
+```js
+const fieldValue = getFieldValue(datoCmsPlugin.formValues, datoCmsPlugin.fieldPath)
+return fieldValue
 ```
 
 ### Reserved words
@@ -72,11 +84,25 @@ The variable `changedField` can be used throughout the code.
 
 Using `console.log(changedField)` will log the value of the field that has changed only if you use that field in your code.
 
-When you change a field that is not used in your code, the code will not be executed.
+When you change a field and the id of the field is not used in your code, the code will not be executed.
 
 #### Locale
 
 `locale` will return the current locale you are working with. If localization is turned on it will dynamically return the correct locale.
+
+For example: You can get a title which is translated
+```js
+return title[locale]
+```
+
+#### datoCmsPlugin
+
+`datoCmsPlugin` will return the whole plugin context. In the [documentation](https://www.datocms.com/docs/plugin-sdk) you can see what properties and methods are exposed. The `datoCmsPlugin` variable is `ctx` of a field extension with the declared type: [RenderFieldExtensionCtx](https://github.com/datocms/plugins-sdk/blob/19af57b61bd763cdb9c3d4aa945408b577602cc0/packages/sdk/src/connect.ts#L72).
+
+For example: The datoCmsPlugin can give you the id of the model your are editing
+```js
+return datoCmsPlugin.itemId
+```
 
 ## Plugin Fields
 
@@ -85,8 +111,8 @@ All fields in this list can be used together with the computed fields plugin. Th
 - [x] JSON (json)
 - [x] Text (text)
 - [x] Boolean (boolean)
-- [ ] Float (float)
-- [ ] Integer (integer)
+- [x] Float (float)
+- [x] Integer (integer)
 - [x] String (string)
 - [ ] Multiple links (links)
 - [ ] Single link (link)
@@ -100,10 +126,6 @@ All fields in this list can be used together with the computed fields plugin. Th
 ## Contributing
 
 See [contributing.md](https://github.com/voorhoede/datocms-plugin-computed-fields/blob/master/contributing.md).
-
-## Credits
-
-Scaffolded using [DatoCMS plugin Yeoman generator](https://github.com/datocms/generator-datocms-plugin).
 
 ## License
 
