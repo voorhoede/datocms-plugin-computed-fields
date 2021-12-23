@@ -7,7 +7,7 @@
 > Used code:
 > ```JS
 > const newDate = new Date(date)
-> return `${title} | ${newDate.getFullYear()}
+> return `${title} | ${newDate.getFullYear()}`
 > ```
 
 ## Features
