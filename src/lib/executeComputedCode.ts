@@ -6,7 +6,7 @@ interface Variables {
   getUpload: (uploadId: string) => any
   getModel: (modelId: string) => any
   getFieldValue: (object: object, fieldName: string) => string
-  changedField: string|undefined
+  changedField: string | undefined
   locale: string
   datoCmsPlugin: RenderFieldExtensionCtx
 }
@@ -15,14 +15,28 @@ export default async function executeComputedCode(
   ctx: RenderFieldExtensionCtx,
   codeToExecute: string,
   changedField?: string
-  ) {
-  const datoClient = new datocmsClient.SiteClient(ctx.currentUserAccessToken)
+) {
+  let datoClient: any;
+  const accessTokenError: string = 'You need to give the plugin permission to use an access token'
+  if (ctx.currentUserAccessToken) {
+    datoClient = new datocmsClient.SiteClient(ctx.currentUserAccessToken)
+  }
 
   function getUpload(uploadId: string) {
+    if (!datoClient) {
+      console.error(accessTokenError)
+      return accessTokenError
+    }
+
     return datoClient.upload.find(uploadId)
   }
 
   function getModel(modelId: string) {
+    if (!datoClient) {
+      console.error(accessTokenError)
+      return accessTokenError
+    }
+
     return datoClient.items.find(modelId)
   }
 
