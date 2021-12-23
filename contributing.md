@@ -8,19 +8,13 @@ Install all the project dependencies with:
 npm install
 ```
 
-Add this plugin in development mode to one of your DatoCMS project with:
-
-```
-npm run addToProject
-```
-
 Start the local development server with:
 
 ```
 npm start
 ```
 
-The plugin will be served from [http://localhost:5000/](http://localhost:5000/). Insert this URL as the plugin [Entry point URL](https://www.datocms.com/docs/plugins/creating-a-new-plugin/).
+The plugin will be served from [http://localhost:3000/](http://localhost:3000/). Insert this URL as the plugin [Entry point URL](https://www.datocms.com/docs/plugins/creating-a-new-plugin/).
 
 ## Publishing
 
