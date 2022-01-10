@@ -114,6 +114,7 @@ All fields in this list can be used together with the computed fields plugin. Th
 - [x] Float (float)
 - [x] Integer (integer)
 - [x] String (string)
+- [ ] Structured text (structured_text)
 - [ ] Multiple links (links)
 - [ ] Single link (link)
 - [ ] Date (date)
