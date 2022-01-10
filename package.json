@@ -1,7 +1,7 @@
 {
   "name": "datocms-plugin-computed-fields",
   "homepage": "https://github.com/voorhoede/datocms-plugin-computed-fields",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "This plugin allows to compute and define a field value based on other fields",
   "scripts": {
     "start": "cross-env BROWSER='none' PUBLIC_URL='/' react-scripts start",
@@ -80,8 +80,8 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@uiw/react-codemirror": "^4.3.1",
-    "datocms-plugin-sdk": "^0.3.27",
-    "datocms-react-ui": "^0.3.29",
+    "datocms-plugin-sdk": "^0.3.33",
+    "datocms-react-ui": "^0.3.33",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
