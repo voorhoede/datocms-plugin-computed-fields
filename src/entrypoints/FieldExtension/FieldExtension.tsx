@@ -61,6 +61,11 @@ export default function FieldExtension({ ctx }: Props) {
     //eslint-disable-next-line
   }, [])
 
+  if (pluginParameters.hideField) {
+    ctx.updateHeight(0)
+    return <></>
+  }
+
   return (
     <Canvas ctx={ctx}>
       {showCodeEditor && (

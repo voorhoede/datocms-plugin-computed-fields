@@ -53,6 +53,10 @@ When you have added the field *Title*, in the function you can use the variable 
 
 ![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-default-function.png)
 
+#### Hide field
+
+This will hide the field, but will not hide the title. To hide the title you could use a hidden character which will make it look like the field is hidden. Like this Unicode character: `‎` (U+200E)
+
 ### Plugin helper functions
 
 `getModel(modelId)`, `getUpload(uploadId)` and `getFieldValue(formValues, fieldPath)` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.

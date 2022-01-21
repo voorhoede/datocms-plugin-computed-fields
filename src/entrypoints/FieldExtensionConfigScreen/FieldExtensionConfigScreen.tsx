@@ -20,6 +20,9 @@ export default function FieldExtensionConfigScreen({ ctx }: Props) {
   const [editFunctionValue, setEditFunctionValue] = useState<boolean>(
     Boolean(pluginParameters?.editFunction)
   )
+  const [hideFieldValue, setHideFieldValue] = useState<boolean>(
+    Boolean(pluginParameters?.hideField)
+  )
   const [defaultFunction, setDefaultFunction] = useState<string>(
     pluginParameters?.defaultFunction
       ? String(pluginParameters?.defaultFunction)
@@ -29,6 +32,11 @@ export default function FieldExtensionConfigScreen({ ctx }: Props) {
   function handleEditFunctionChange(newValue: boolean) {
     setEditFunctionValue(newValue)
     ctx.setParameters({ ...pluginParameters, editFunction: newValue })
+  }
+
+  function handleHideFieldChange(newValue: boolean) {
+    setHideFieldValue(newValue)
+    ctx.setParameters({ ...pluginParameters, hideField: newValue })
   }
 
   function handleDefaultFunctionChange(newValue: string) {
@@ -59,6 +67,15 @@ export default function FieldExtensionConfigScreen({ ctx }: Props) {
             This field always needs a return (i.e. return title)
           </FieldHint>
         </FieldGroup>
+
+        <SwitchField
+          id="hideField"
+          name="hideField"
+          label="Hide field"
+          hint="This will hide the field, but will not hide the title"
+          value={hideFieldValue}
+          onChange={handleHideFieldChange}
+        />
       </Form>
     </Canvas>
   )
