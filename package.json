@@ -41,7 +41,7 @@
     "boolean"
   ],
   "files": [
-    "dist",
+    "build",
     "docs"
   ],
   "author": "Voorhoede <victor@voorhoede.nl>",
