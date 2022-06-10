@@ -1,6 +1,6 @@
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
 import getFieldValue from '../lib/getFieldValue'
-const datocmsClient = require('datocms-client')
+const { SiteClient } = require('datocms-client')
 
 interface Variables {
   getUpload: (uploadId: string) => any
@@ -18,8 +18,10 @@ export default async function executeComputedCode(
 ) {
   let datoClient: any;
   const accessTokenError: string = 'You need to give the plugin permission to use an access token'
-  if (ctx.currentUserAccessToken) {
-    datoClient = new datocmsClient.SiteClient(ctx.currentUserAccessToken)
+
+  const { currentUserAccessToken, environment } = ctx
+  if (currentUserAccessToken) {
+    datoClient = new SiteClient(currentUserAccessToken, { environment })
   }
 
   function getUpload(uploadId: string) {
