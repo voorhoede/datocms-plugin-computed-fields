@@ -55,6 +55,11 @@ export default function CodeEditor({ value, fieldType }: Props) {
             htmlFor: 'computed-field--boolean',
             className: 'sr-only',
           }}
+          switchInputProps={{
+            disabled: true,
+            name: "computed-field--boolean",
+            value,
+          }}
         />
       )
     }
@@ -81,6 +86,7 @@ export default function CodeEditor({ value, fieldType }: Props) {
           }}
           textInputProps={{
             readOnly: true,
+            disabled: true,
             type: 'number',
           }}
         />
@@ -108,6 +114,7 @@ export default function CodeEditor({ value, fieldType }: Props) {
           }}
           textInputProps={{
             readOnly: true,
+            disabled: true,
           }}
         />
       )

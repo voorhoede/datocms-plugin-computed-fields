@@ -5,7 +5,7 @@ const { SiteClient } = require('datocms-client')
 interface Variables {
   getUpload: (uploadId: string) => any
   getModel: (modelId: string) => any
-  getFieldValue: (object: object, fieldName: string) => string
+  getFieldValue: (object: object, fieldName: string) => any
   changedField: string | undefined
   locale: string
   datoCmsPlugin: RenderFieldExtensionCtx

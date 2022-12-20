@@ -63,7 +63,7 @@ export default function FieldExtension({ ctx }: Props) {
 
   if (pluginParameters.hideField) {
     ctx.updateHeight(0)
-    return <></>
+    return null
   }
 
   return (
