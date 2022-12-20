@@ -1,7 +1,7 @@
 {
   "name": "datocms-plugin-computed-fields",
   "homepage": "https://github.com/voorhoede/datocms-plugin-computed-fields",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "This plugin allows to compute and define a field value based on other fields",
   "engines": {
     "node": ">=16.0.0"
