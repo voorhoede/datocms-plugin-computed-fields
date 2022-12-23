@@ -81,7 +81,7 @@ return fieldValue
 
 ### Reserved words
 
-#### Changed fields
+#### Changed fields (changedField)
 
 When you change a field on the DatoCMS page there will be a variable available with the name of the field that changed.
 The variable `changedField` can be used throughout the code.
@@ -90,7 +90,7 @@ Using `console.log(changedField)` will log the value of the field that has chang
 
 When you change a field and the id of the field is not used in your code, the code will not be executed.
 
-#### Locale
+#### Locale (locale)
 
 `locale` will return the current locale you are working with. If localization is turned on it will dynamically return the correct locale.
 
@@ -99,13 +99,22 @@ For example: You can get a title which is translated
 return title[locale]
 ```
 
-#### datoCmsPlugin
+#### DatoCMS Plugin (datoCmsPlugin)
 
 `datoCmsPlugin` will return the whole plugin context. In the [documentation](https://www.datocms.com/docs/plugin-sdk) you can see what properties and methods are exposed. The `datoCmsPlugin` variable is `ctx` of a field extension with the declared type: [RenderFieldExtensionCtx](https://github.com/datocms/plugins-sdk/blob/19af57b61bd763cdb9c3d4aa945408b577602cc0/packages/sdk/src/connect.ts#L72).
 
-For example: The datoCmsPlugin can give you the id of the model your are editing
+For example: The `datoCmsPlugin` can give you the id of the model your are editing
 ```js
 return datoCmsPlugin.itemId
+```
+
+#### This block (thisBlock)
+
+When using the plugin inside a modular content block it's difficult to get the data fields from the item you have added. For this you can use the `thisBlock` variable which returns an object of the fields inside that block. From this object you can get all the fields and destructure that object to get the correct data.
+
+For example: The `thisBlock` can give you data of the current block you are working in
+```js
+return thisBlock.title
 ```
 
 ## Plugin Fields
