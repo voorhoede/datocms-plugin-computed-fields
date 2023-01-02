@@ -9,6 +9,7 @@ interface Variables {
   changedField: string | undefined
   locale: string
   datoCmsPlugin: RenderFieldExtensionCtx
+  thisBlock: any
 }
 
 export default async function executeComputedCode(
@@ -42,6 +43,14 @@ export default async function executeComputedCode(
     return datoClient.items.find(modelId)
   }
 
+  let thisBlock = null
+  const fieldPath = ctx.fieldPath
+  const indexOfDot = fieldPath.lastIndexOf('.')
+  if (indexOfDot > -1) {
+    const fieldPathBefore = fieldPath.slice(0, indexOfDot)
+    thisBlock = getFieldValue(ctx.formValues, fieldPathBefore)
+  }
+
   const variables: Variables = {
     getUpload: getUpload,
     getModel: getModel,
@@ -49,6 +58,7 @@ export default async function executeComputedCode(
     changedField: changedField,
     locale: ctx.locale,
     datoCmsPlugin: ctx,
+    thisBlock,
   }
 
   const functionArgs: any[] = Object.keys(ctx.formValues)
