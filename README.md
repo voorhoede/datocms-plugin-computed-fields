@@ -2,7 +2,7 @@
 
 **This DatoCMS plugin allows to compute and define a field value based on other fields. This allows pretty “preview” values in the CMS (used in model overviews and for linked models). And moves logic from clients to a central place: the API.**
 
-![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin.png)
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/main/docs/plugin.png)
 
 > Used code:
 > ```JS
@@ -38,7 +38,7 @@ When you are not returning the value a field requires it will give a DatoCMS err
 
 > Only show this editor when you want to have a sandbox to help you make an usefull function.
 
-![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-debug-editor.png)
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/main/docs/plugin-debug-editor.png)
 
 **Only for testing purposes:**
 The value in this editor will not be saved. You copy this value and add it to the "Default function" option of this plugin.
@@ -51,7 +51,7 @@ All fields of the page you added will be automatically added as variable using t
 
 When you have added the field *Title*, in the function you can use the variable `title` which would have the value of this field.
 
-![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/master/docs/plugin-default-function.png)
+![](https://github.com/voorhoede/datocms-plugin-computed-fields/raw/main/docs/plugin-default-function.png)
 
 #### Hide field
 
@@ -139,7 +139,7 @@ All fields in this list can be used together with the computed fields plugin. Th
 
 ## Contributing
 
-See [contributing.md](https://github.com/voorhoede/datocms-plugin-computed-fields/blob/master/contributing.md).
+See [contributing.md](https://github.com/voorhoede/datocms-plugin-computed-fields/blob/main/contributing.md).
 
 ## License
 
