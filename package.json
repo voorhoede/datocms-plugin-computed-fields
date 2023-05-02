@@ -13,6 +13,29 @@
     "eject": "react-scripts eject",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.1.4",
+    "@codemirror/theme-one-dark": "^6.1.1",
+    "@datocms/cma-client-browser": "^1.2.12",
+    "@types/lodash": "^4.14.192",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@uiw/react-codemirror": "^4.19.11",
+    "datocms-plugin-sdk": "^0.7.4",
+    "datocms-react-ui": "^0.7.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "react-scripts": "^5.0.1"
+  },
+  "files": [
+    "build",
+    "docs"
+  ],
   "keywords": [
     "datocms",
     "datocms-plugin",
@@ -40,12 +63,8 @@
     "text",
     "boolean"
   ],
-  "files": [
-    "build",
-    "docs"
-  ],
   "author": "Voorhoede <victor@voorhoede.nl>",
-  "license": "MIT",
+  "license": "ISC",
   "datoCmsPlugin": {
     "title": "Computed Fields",
     "previewImage": "docs/preview.gif",
@@ -71,24 +90,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "react-scripts": "^5.0.1"
-  },
-  "dependencies": {
-    "@codemirror/lang-javascript": "^6.1.4",
-    "@codemirror/theme-one-dark": "^6.1.1",
-    "@datocms/cma-client-browser": "^1.2.12",
-    "@types/lodash": "^4.14.192",
-    "@types/node": "^18.15.11",
-    "@types/react": "^18.0.33",
-    "@types/react-dom": "^18.0.11",
-    "@uiw/react-codemirror": "^4.19.11",
-    "datocms-plugin-sdk": "^0.7.4",
-    "datocms-react-ui": "^0.7.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^4.9.5"
   }
 }
