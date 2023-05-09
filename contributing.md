@@ -22,7 +22,7 @@ Before publishing this plugin, make sure:
 
 * you've properly described any configuration parameters in this README file;
 * you've updated the changelog with relevant information;
-* you've properly compiled this project's `package.json` following the [official rules](https://www.datocms.com/docs/plugins/publishing/).
+* you've properly compiled this project's `package.json` following the [official rules](https://www.datocms.com/docs/plugin-sdk/publishing-to-marketplace).
 
 When everything's ready, just run:
 
