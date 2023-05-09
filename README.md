@@ -140,7 +140,3 @@ All fields in this list can be used together with the computed fields plugin. Th
 ## Contributing
 
 See [contributing.md](https://github.com/voorhoede/datocms-plugin-computed-fields/blob/main/contributing.md).
-
-## License
-
-*MIT Licensed* by [De Voorhoede](https://www.voorhoede.nl).
