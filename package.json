@@ -11,7 +11,7 @@
     "build": "cross-env PUBLIC_URL='.' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepublishOnly": "npm run build"
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.4",
@@ -63,6 +63,10 @@
     "text",
     "boolean"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/voorhoede/datocms-plugin-computed-fields.git"
+  },
   "author": "Voorhoede <victor@voorhoede.nl>",
   "license": "ISC",
   "datoCmsPlugin": {
