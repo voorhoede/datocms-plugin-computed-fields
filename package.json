@@ -11,7 +11,8 @@
     "build": "cross-env PUBLIC_URL='.' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "postversion": "git push --follow-tags"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.4",
