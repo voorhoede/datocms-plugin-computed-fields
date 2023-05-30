@@ -16,5 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Update all dependencies to their latest version.
 
+[2.4.4]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/v2.4.4...v2.4.3
 [2.4.3]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/f38ff75...v2.4.3
 [2.4.2]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/dc0f6ac...f38ff75
