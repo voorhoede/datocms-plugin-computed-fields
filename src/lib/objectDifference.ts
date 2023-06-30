@@ -4,15 +4,24 @@ import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 
 export default function difference(origObj: any, newObj: any) {
-  function changes(newObj: any, origObj: any) {
+  function changes(newObj: any, origObj: any, parentKey: string = '', flattenResult: any = {}) {
     let arrayIndexCounter = 0
 
-    return transform(newObj, function (result: any, value: any, key: any) {
+    transform(newObj, function (result: any, value: any, key: any) {
+      const currentKey = parentKey ? `${parentKey}.${key}` : key
+
       if (!isEqual(value, origObj[key])) {
-        let resultKey = isArray(origObj) ? arrayIndexCounter++ : key
-        result[resultKey] = (isObject(value) && isObject(origObj[key])) ? changes(value, origObj[key]) : value
+        let resultKey = isArray(origObj) ? `${currentKey}.${arrayIndexCounter++}` : currentKey
+        if (isObject(value) && isObject(origObj[key])) {
+          changes(value, origObj[key], currentKey, flattenResult)
+        } else {
+          result[resultKey] = value
+          flattenResult[resultKey] = value
+        }
       }
     })
+
+    return flattenResult
   }
 
   return changes(newObj, origObj)
