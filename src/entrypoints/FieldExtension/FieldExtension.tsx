@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react'
-import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
-import { Canvas, Button } from 'datocms-react-ui'
+import {useState, useCallback, useEffect} from 'react'
+import {RenderFieldExtensionCtx} from 'datocms-plugin-sdk'
+import {Canvas, Button} from 'datocms-react-ui'
 
 import CodeEditor from '../../components/CodeEditor/CodeEditor'
 import RenderResults from '../../components/RenderResults/RenderResults'
@@ -15,7 +15,7 @@ type Props = {
   ctx: RenderFieldExtensionCtx
 }
 
-export default function FieldExtension({ ctx }: Props) {
+export default function FieldExtension({ctx}: Props) {
   const pluginParameters: any = ctx.parameters
   const code: string = pluginParameters?.defaultFunction
   const showCodeEditor: string = pluginParameters?.editFunction
@@ -43,17 +43,22 @@ export default function FieldExtension({ ctx }: Props) {
     []
   )
 
-  let fieldPathOfBlock = ''
-  if (code.includes('thisBlock')) {
-    const fieldPath = ctx.fieldPath
-    const lastIndexOfDot = fieldPath.lastIndexOf('.')
-    fieldPathOfBlock = fieldPath.slice(0, lastIndexOfDot)
+  const differenceObject = objectDifference(formValues, ctx.formValues)
+
+  const lastIndexOfDot = ctx.fieldPath.lastIndexOf('.')
+  let ctxPath: string = "";
+  if (lastIndexOfDot > 0) {
+    ctxPath = ctx.fieldPath.slice(0, lastIndexOfDot)
   }
 
-  const differenceObject = objectDifference(formValues, ctx.formValues)
-  Object.keys(differenceObject).forEach((key) => {
-    if (code.includes(key) || (code.includes('thisBlock') && key.includes(fieldPathOfBlock))) {
-      handleFieldValue(ctx, code, key).then((fieldValue: any) => {
+  Object.keys(differenceObject).forEach((modifiedFieldPath) => {
+    const ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField
+      = modifiedFieldPath
+      .split(".")
+      .slice(ctxPath.split(".").filter(s => s).length)
+      .shift()
+    if (ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField && code.includes(ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField)) {
+      handleFieldValue(ctx, code, modifiedFieldPath).then((fieldValue: any) => {
         saveFieldValue(ctx, fieldValue)
         setFormValues(ctx.formValues)
       })
@@ -77,7 +82,7 @@ export default function FieldExtension({ ctx }: Props) {
     <Canvas ctx={ctx}>
       {showCodeEditor && (
         <div className={styles.editorContainer}>
-          <CodeEditor code={codeValue} onChange={setCodeValue} />
+          <CodeEditor code={codeValue} onChange={setCodeValue}/>
 
           <Button
             className={styles.button}
@@ -89,7 +94,7 @@ export default function FieldExtension({ ctx }: Props) {
         </div>
       )}
 
-      <RenderResults fieldType={fieldType} value={fieldValue} />
+      <RenderResults fieldType={fieldType} value={fieldValue}/>
     </Canvas>
   )
 }

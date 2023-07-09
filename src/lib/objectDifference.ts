@@ -2,7 +2,6 @@ import transform from 'lodash/transform'
 import isEqual from 'lodash/isEqual'
 import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
-import {reduce} from "lodash";
 
 export default function difference(origObj: any, newObj: any) {
 
