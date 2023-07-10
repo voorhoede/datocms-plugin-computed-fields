@@ -37,7 +37,9 @@ export default function FieldExtension({ ctx }: Props) {
         codeToExecute,
         changedField
       )
-      setFieldValue(codeResult)
+      if (fieldValue !== undefined) {
+        setFieldValue(codeResult)
+      }
       return codeResult
     },
     []
@@ -54,15 +56,19 @@ export default function FieldExtension({ ctx }: Props) {
   Object.keys(differenceObject).forEach((key) => {
     if (code.includes(key) || (code.includes('thisBlock') && key.includes(fieldPathOfBlock))) {
       handleFieldValue(ctx, code, key).then((fieldValue: any) => {
-        saveFieldValue(ctx, fieldValue)
-        setFormValues(ctx.formValues)
+        if (fieldValue !== undefined) {
+          saveFieldValue(ctx, fieldValue)
+          setFormValues(ctx.formValues)
+        }
       })
     }
   })
 
   useEffect(() => {
     handleFieldValue(ctx, code).then((fieldValue: any) => {
-      saveFieldValue(ctx, fieldValue)
+      if (fieldValue !== undefined) {
+        saveFieldValue(ctx, fieldValue)
+      }
     })
 
     //eslint-disable-next-line
