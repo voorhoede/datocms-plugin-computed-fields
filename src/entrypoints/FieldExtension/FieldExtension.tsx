@@ -7,7 +7,7 @@ import RenderResults from '../../components/RenderResults/RenderResults'
 
 import executeComputedCode from '../../lib/executeComputedCode'
 import saveFieldValue from '../../lib/saveFieldValue'
-import objectDifference from '../../lib/objectDifference'
+import getObjectDifferences from '../../lib/objectDifference'
 
 import styles from './FieldExtension.module.css'
 
@@ -44,19 +44,22 @@ export default function FieldExtension({ ctx }: Props) {
   )
 
   const ctxFieldPathLastIndexOfDot = ctx.fieldPath.lastIndexOf('.')
-  let ctxPath: string = "";
+  let ctxPath: string = ''
   if (ctxFieldPathLastIndexOfDot > 0) {
     ctxPath = ctx.fieldPath.slice(0, ctxFieldPathLastIndexOfDot)
   }
 
-  const differenceObject = objectDifference(formValues, ctx.formValues)
+  const differenceObject = getObjectDifferences(formValues, ctx.formValues)
   Object.keys(differenceObject).forEach((modifiedFieldPath) => {
-    const ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField
-      = modifiedFieldPath
-      .split(".")
-      .slice(ctxPath.split(".").filter(s => s).length)
-      .shift()
-    if (ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField && code.includes(ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField)) {
+    const ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField =
+      modifiedFieldPath
+        .split('.')
+        .slice(ctxPath.split('.').filter((s) => s).length)
+        .shift()
+    if (
+      ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField &&
+      code.includes(ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField)
+    ) {
       handleFieldValue(ctx, code, modifiedFieldPath).then((fieldValue: any) => {
         saveFieldValue(ctx, fieldValue)
         setFormValues(ctx.formValues)
