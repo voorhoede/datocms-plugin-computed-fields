@@ -37,7 +37,7 @@ export default function FieldExtension({ ctx }: Props) {
         codeToExecute,
         changedField
       )
-      if (fieldValue !== undefined) {
+      if (codeResult !== undefined) {
         setFieldValue(codeResult)
       }
       return codeResult
