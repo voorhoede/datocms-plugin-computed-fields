@@ -3,17 +3,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [2.4.6] - 2023-07-09
+## [2.4.6] - 2023-07-10
 ### Fixed
 - Make sure fields update if element is removed from link/block list
 - Make sure fields update if link/block list is emptied
-- objectDifference.ts typo
-### Added
-- Unit test framework
-- objectDifference.ts unit test
 ### Changed
-- typescript version -> 5.1.6
+- Updated script triggering mechanism (for each modified flattened path the code will be checked for presence of the oldest ancestor from the modified path up to the level where field holding the script resides). Please see example behavior below:
+```
+{
+  computed_field
+  text_field
+  blocks {
+    block_computed_field
+    block_text_field
+    inner_blocks {
+      inner_block_text_field
+    }
+  }
+}
+```
+| compute field	       | modified path	                                 | code checked for presence of |
+  |----------------------|------------------------------------------------|------------------------------|
+| computed_field       | textField                                      | textField                    |
+| computed_field       | blocks.0.block_text                            | blocks                       |
+| block_computed_field | textField                                      | ignored                      |
+| block_computed_field | blocks.0.block_text                            | block_text                   |
+| block_computed_field | blocks.0.inner_blocks.0.inner_block_text_field | inner_blocks                 |
 
 ## [2.4.5] - 2023-06-30
 ### Fixed
