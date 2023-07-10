@@ -4,25 +4,35 @@ import isObject from 'lodash/isObject'
 import isArray from 'lodash/isArray'
 
 export default function difference(origObj: any, newObj: any) {
-  function changes(newObj: any, origObj: any, parentKey: string = '', flattenResult: any = {}) {
+
+  function flatten(obj: any, parentKey: string = "") {
     let arrayIndexCounter = 0
-
-    transform(newObj, function (result: any, value: any, key: any) {
+    return transform(obj, function (result: any, value: any, key: any) {
       const currentKey = parentKey ? `${parentKey}.${key}` : key
-
-      if (!isEqual(value, origObj[key])) {
-        let resultKey = isArray(origObj) ? `${currentKey}.${arrayIndexCounter++}` : currentKey
-        if (isObject(value) && isObject(origObj[key])) {
-          changes(value, origObj[key], currentKey, flattenResult)
-        } else {
-          result[resultKey] = value
-          flattenResult[resultKey] = value
-        }
+      let resultKey = isArray(value) ? `${currentKey}.${arrayIndexCounter++}` : currentKey
+      if (isObject(value)) {
+        Object.assign(result, flatten(value, currentKey))
+      } else {
+        result[resultKey] = value
       }
     })
-
-    return flattenResult
   }
 
-  return changes(newObj, origObj)
+  function onlyUnique(value: any, index: number, array: any[]) {
+    return array.indexOf(value) === index;
+  }
+
+  const origObjFlattened = flatten(origObj)
+  const newObjFlattened = flatten(newObj)
+
+  return Object.keys(origObjFlattened)
+    .concat(Object.keys(newObjFlattened))
+    .filter(onlyUnique)
+    .reduce((result: any, key: any) => {
+      let newObjValue = newObjFlattened[key]
+      if (!isEqual(origObjFlattened[key], newObjValue)) {
+        result[key] = newObjValue || null
+      }
+      return result
+    }, {})
 }

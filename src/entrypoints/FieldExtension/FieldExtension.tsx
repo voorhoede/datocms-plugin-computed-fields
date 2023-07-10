@@ -43,17 +43,21 @@ export default function FieldExtension({ ctx }: Props) {
     []
   )
 
-  let fieldPathOfBlock = ''
-  if (code.includes('thisBlock')) {
-    const fieldPath = ctx.fieldPath
-    const lastIndexOfDot = fieldPath.lastIndexOf('.')
-    fieldPathOfBlock = fieldPath.slice(0, lastIndexOfDot)
+  const ctxFieldPathLastIndexOfDot = ctx.fieldPath.lastIndexOf('.')
+  let ctxPath: string = "";
+  if (ctxFieldPathLastIndexOfDot > 0) {
+    ctxPath = ctx.fieldPath.slice(0, ctxFieldPathLastIndexOfDot)
   }
 
   const differenceObject = objectDifference(formValues, ctx.formValues)
-  Object.keys(differenceObject).forEach((key) => {
-    if (code.includes(key) || (code.includes('thisBlock') && key.includes(fieldPathOfBlock))) {
-      handleFieldValue(ctx, code, key).then((fieldValue: any) => {
+  Object.keys(differenceObject).forEach((modifiedFieldPath) => {
+    const ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField
+      = modifiedFieldPath
+      .split(".")
+      .slice(ctxPath.split(".").filter(s => s).length)
+      .shift()
+    if (ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField && code.includes(ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField)) {
+      handleFieldValue(ctx, code, modifiedFieldPath).then((fieldValue: any) => {
         saveFieldValue(ctx, fieldValue)
         setFormValues(ctx.formValues)
       })
