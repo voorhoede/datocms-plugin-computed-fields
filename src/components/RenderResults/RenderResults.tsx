@@ -57,7 +57,7 @@ export default function CodeEditor({ value, fieldType }: Props) {
           }}
           switchInputProps={{
             disabled: true,
-            name: "computed-field--boolean",
+            name: 'computed-field--boolean',
             value,
           }}
         />

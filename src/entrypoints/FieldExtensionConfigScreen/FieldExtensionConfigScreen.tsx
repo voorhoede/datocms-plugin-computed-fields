@@ -18,15 +18,15 @@ type Props = {
 export default function FieldExtensionConfigScreen({ ctx }: Props) {
   const pluginParameters = ctx.parameters
   const [editFunctionValue, setEditFunctionValue] = useState<boolean>(
-    Boolean(pluginParameters?.editFunction)
+    Boolean(pluginParameters?.editFunction),
   )
   const [hideFieldValue, setHideFieldValue] = useState<boolean>(
-    Boolean(pluginParameters?.hideField)
+    Boolean(pluginParameters?.hideField),
   )
   const [defaultFunction, setDefaultFunction] = useState<string>(
     pluginParameters?.defaultFunction
       ? String(pluginParameters?.defaultFunction)
-      : ''
+      : '',
   )
 
   function handleEditFunctionChange(newValue: boolean) {
