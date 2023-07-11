@@ -15,7 +15,7 @@ interface Variables {
 export default async function executeComputedCode(
   ctx: RenderFieldExtensionCtx,
   codeToExecute: string,
-  changedField?: string
+  changedField?: string,
 ) {
   let datoClient: any
   const accessTokenError: string =

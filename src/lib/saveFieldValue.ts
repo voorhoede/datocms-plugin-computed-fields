@@ -1,6 +1,9 @@
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
 
-export default function saveFieldValue(ctx: RenderFieldExtensionCtx, fieldValue: any) {
+export default function saveFieldValue(
+  ctx: RenderFieldExtensionCtx,
+  fieldValue: any,
+) {
   const fieldType: string = ctx.field.attributes.field_type
   const fieldPath: string = ctx.fieldPath
 
