@@ -4,7 +4,7 @@
   "version": "2.4.6",
   "description": "This plugin allows to compute and define a field value based on other fields",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "start": "cross-env BROWSER='none' PUBLIC_URL='/' react-scripts start",
