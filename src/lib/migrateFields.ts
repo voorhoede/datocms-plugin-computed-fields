@@ -24,7 +24,7 @@ export default async function migrateFields(ctx: OnBootCtx, fieldId: string) {
           newFieldExtensionId: fieldId,
         },
       ])
-    })
+    }),
   )
 
   // save in configuration the fact that we already performed the migration

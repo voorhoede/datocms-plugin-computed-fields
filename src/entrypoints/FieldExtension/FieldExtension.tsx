@@ -30,17 +30,17 @@ export default function FieldExtension({ ctx }: Props) {
     async (
       ctx: RenderFieldExtensionCtx,
       codeToExecute: string,
-      changedField?: string
+      changedField?: string,
     ) => {
       const codeResult = await executeComputedCode(
         ctx,
         codeToExecute,
-        changedField
+        changedField,
       )
       setFieldValue(codeResult)
       return codeResult
     },
-    []
+    [],
   )
 
   const ctxFieldPathLastIndexOfDot = ctx.fieldPath.lastIndexOf('.')

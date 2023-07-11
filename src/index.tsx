@@ -37,7 +37,7 @@ connect({
   },
   renderManualFieldExtensionConfigScreen(
     _,
-    ctx: RenderManualFieldExtensionConfigScreenCtx
+    ctx: RenderManualFieldExtensionConfigScreenCtx,
   ) {
     return render(<FieldExtensionConfigScreen ctx={ctx} />)
   },
