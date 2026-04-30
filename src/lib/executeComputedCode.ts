@@ -5,6 +5,7 @@ import { buildClient } from '@datocms/cma-client-browser'
 interface Variables {
   getUpload: (uploadId: string) => any
   getModel: (modelId: string) => any
+  getModelType: (itemTypeId: string) => any
   getFieldValue: (object: object, fieldName: string) => any
   changedField: string | undefined
   locale: string
@@ -44,6 +45,15 @@ export default async function executeComputedCode(
     return datoClient.items.find(modelId)
   }
 
+  function getModelType(itemTypeId: string) {
+    if (!datoClient) {
+      console.error(accessTokenError)
+      return accessTokenError
+    }
+
+    return datoClient.itemTypes.find(itemTypeId)
+  }
+
   let thisBlock = null
   const fieldPath = ctx.fieldPath
   const indexOfDot = fieldPath.lastIndexOf('.')
@@ -55,6 +65,7 @@ export default async function executeComputedCode(
   const variables: Variables = {
     getUpload: getUpload,
     getModel: getModel,
+    getModelType: getModelType,
     getFieldValue: getFieldValue,
     changedField: changedField,
     locale: ctx.locale,
