@@ -14,7 +14,7 @@
 
 * Return specified values
 * Use all javascript functionality
-* Get a model and an upload with an ID
+* Get a model, a model schema, and an upload with an ID
 * Have access to all fields on the page
 
 ## Configuration
@@ -59,7 +59,7 @@ This will hide the field, but will not hide the title. To hide the title you cou
 
 ### Plugin helper functions
 
-`getModel(modelId)`, `getUpload(uploadId)` and `getFieldValue(formValues, fieldPath)` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these two functions.
+`getModel(modelId)`, `getModelType(itemTypeId)`, `getUpload(uploadId)` and `getFieldValue(formValues, fieldPath)` are functions to use in the plugin. When you have added the DatoCMS readonly token in the general settings of the plugin, you can use these functions.
 
 For example: When there is an `uploadId` you can use this function to get all data for this upload.
 ```js
@@ -71,6 +71,12 @@ For example: When there is an `modelId` you can use this function to get all dat
 ```js
 const model = await getModel(modelId)
 return model.title
+```
+
+For example: When there is an `itemTypeId` you can use this function to get the model schema (item type).
+```js
+const itemType = await getModelType(itemTypeId)
+return itemType.name
 ```
 
 For example: To get the value of a field you can use the datoCmsPlugin variable.
