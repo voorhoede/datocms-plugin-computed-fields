@@ -173,7 +173,7 @@ form {
  */
 
 fieldset {
-  border: 1px solid #c0c0c0;
+  border: 1px solid var(--color--border-hover);
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em;
 }
@@ -330,17 +330,17 @@ button,
 input,
 select,
 textarea {
-  color: #222;
+  color: var(--color--ink);
 }
 
 
 ::-moz-selection {
-  background: #b3d4fc;
+  background: var(--color--highlight--surface);
   text-shadow: none;
 }
 
 ::selection {
-  background: #b3d4fc;
+  background: var(--color--highlight--surface);
   text-shadow: none;
 }
 
@@ -360,7 +360,7 @@ textarea {
 
 .chromeframe {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  background: var(--color--surface-muted);
+  color: var(--color--ink);
   padding: 0.2em 0;
 }
