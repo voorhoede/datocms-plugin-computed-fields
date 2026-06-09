@@ -33,7 +33,7 @@ strong {
 pre {
   font-family: var(--monospaced-font-family);
   font-size: var(--font-size-s);
-  background-color: var(--light-bg-color);
+  background-color: var(--color--surface-muted);
   padding: var(--spacing-m);
   margin-bottom: var(--spacing-m);
 }

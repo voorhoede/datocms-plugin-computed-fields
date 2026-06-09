@@ -84,7 +84,11 @@ export default function FieldExtension({ ctx }: Props) {
     <Canvas ctx={ctx}>
       {showCodeEditor && (
         <div className={styles.editorContainer}>
-          <CodeEditor code={codeValue} onChange={setCodeValue} />
+          <CodeEditor
+            code={codeValue}
+            onChange={setCodeValue}
+            colorScheme={ctx.colorScheme}
+          />
 
           <Button
             className={styles.button}

@@ -5,16 +5,17 @@ import { oneDark } from '@codemirror/theme-one-dark'
 type Props = {
   code: string
   onChange: (value: string) => void
+  colorScheme?: string
 }
 
-export default function CodeEditor({ code, onChange }: Props) {
+export default function CodeEditor({ code, onChange, colorScheme }: Props) {
   return (
     <CodeMirror
       value={code}
       minHeight="200px"
       extensions={[javascript()]}
       onChange={onChange}
-      theme={oneDark}
+      theme={colorScheme === 'dark' ? oneDark : 'light'}
     />
   )
 }

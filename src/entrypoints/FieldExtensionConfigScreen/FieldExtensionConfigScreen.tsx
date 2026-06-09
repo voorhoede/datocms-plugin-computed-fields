@@ -62,6 +62,7 @@ export default function FieldExtensionConfigScreen({ ctx }: Props) {
           <CodeEditor
             code={defaultFunction}
             onChange={handleDefaultFunctionChange}
+            colorScheme={ctx.colorScheme}
           />
           <FieldHint>
             This field always needs a return (i.e. return title)
