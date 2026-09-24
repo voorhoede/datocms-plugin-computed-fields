@@ -1,4 +1,6 @@
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
+import isEqual from 'lodash/isEqual'
+import getFieldValue from './getFieldValue'
 
 export default function saveFieldValue(
   ctx: RenderFieldExtensionCtx,
@@ -6,16 +8,13 @@ export default function saveFieldValue(
 ) {
   const fieldType: string = ctx.field.attributes.field_type
   const fieldPath: string = ctx.fieldPath
+  const valueToSave =
+    fieldType === 'json' ? JSON.stringify(fieldValue, undefined, 2) : fieldValue
 
-  switch (fieldType) {
-    case 'json': {
-      const jsonValue = JSON.stringify(fieldValue, undefined, 2)
-      ctx.setFieldValue(fieldPath, jsonValue)
-      return jsonValue
-    }
-    default: {
-      ctx.setFieldValue(fieldPath, fieldValue)
-      return fieldValue
-    }
+  // Writing an unchanged value would still notify every other field on the form.
+  if (!isEqual(getFieldValue(ctx.formValues, fieldPath), valueToSave)) {
+    ctx.setFieldValue(fieldPath, valueToSave)
   }
+
+  return valueToSave
 }

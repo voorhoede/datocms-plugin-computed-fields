@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
-import { Canvas, Button } from 'datocms-react-ui'
+import { Canvas, Button, FieldError } from 'datocms-react-ui'
 
 import CodeEditor from '../../components/CodeEditor/CodeEditor'
 import RenderResults from '../../components/RenderResults/RenderResults'
@@ -8,11 +8,22 @@ import RenderResults from '../../components/RenderResults/RenderResults'
 import executeComputedCode from '../../lib/executeComputedCode'
 import saveFieldValue from '../../lib/saveFieldValue'
 import getObjectDifferences from '../../lib/objectDifference'
+import isDependencyChange from '../../lib/isDependencyChange'
+import createRecomputeQueue, {
+  RecomputeQueue,
+} from '../../lib/createRecomputeQueue'
 
 import styles from './FieldExtension.module.css'
 
+// Waits for edits to settle, so a burst of changes costs a single run.
+export const RECOMPUTE_DELAY_MS = 300
+
 type Props = {
   ctx: RenderFieldExtensionCtx
+}
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error)
 }
 
 export default function FieldExtension({ ctx }: Props) {
@@ -24,56 +35,65 @@ export default function FieldExtension({ ctx }: Props) {
 
   const [fieldValue, setFieldValue] = useState<string>('')
   const [codeValue, setCodeValue] = useState<string>(code)
-  const [formValues, setFormValues] = useState<any>(ctx.formValues)
+  const [error, setError] = useState<string>()
 
-  const handleFieldValue: any = useCallback(
-    async (
-      ctx: RenderFieldExtensionCtx,
-      codeToExecute: string,
-      changedField?: string,
-    ) => {
-      const codeResult = await executeComputedCode(
-        ctx,
-        codeToExecute,
-        changedField,
-      )
-      setFieldValue(codeResult)
-      return codeResult
-    },
-    [],
-  )
-
-  const ctxFieldPathLastIndexOfDot = ctx.fieldPath.lastIndexOf('.')
-  let ctxPath: string = ''
-  if (ctxFieldPathLastIndexOfDot > 0) {
-    ctxPath = ctx.fieldPath.slice(0, ctxFieldPathLastIndexOfDot)
-  }
-
-  const differenceObject = getObjectDifferences(formValues, ctx.formValues)
-  Object.keys(differenceObject).forEach((modifiedFieldPath) => {
-    const ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField =
-      modifiedFieldPath
-        .split('.')
-        .slice(ctxPath.split('.').filter((s) => s).length)
-        .shift()
-    if (
-      ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField &&
-      code.includes(ctxLevelNameOfModifiedFieldOrOfAncestorOfModifiedField)
-    ) {
-      handleFieldValue(ctx, code, modifiedFieldPath).then((fieldValue: any) => {
-        saveFieldValue(ctx, fieldValue)
-        setFormValues(ctx.formValues)
-      })
-    }
-  })
+  // Runs read the latest ctx, since the host pushes a new one on every form change.
+  const latestCtx = useRef(ctx)
+  latestCtx.current = ctx
+  const previousFormValues = useRef(ctx.formValues)
+  const recomputeQueue = useRef<RecomputeQueue<string>>()
 
   useEffect(() => {
-    handleFieldValue(ctx, code).then((fieldValue: any) => {
-      saveFieldValue(ctx, fieldValue)
-    })
+    const queue = createRecomputeQueue<string>(
+      RECOMPUTE_DELAY_MS,
+      async (changedField, isSuperseded) => {
+        try {
+          const codeResult = await executeComputedCode(
+            latestCtx.current,
+            code,
+            changedField,
+          )
+          if (isSuperseded()) return
+          setFieldValue(codeResult)
+          setError(undefined)
+          saveFieldValue(latestCtx.current, codeResult)
+        } catch (caught) {
+          if (isSuperseded()) return
+          console.error(caught)
+          setError(getErrorMessage(caught))
+        }
+      },
+    )
+    recomputeQueue.current = queue
+    queue.schedule()
 
+    return () => queue.dispose()
     //eslint-disable-next-line
   }, [])
+
+  useEffect(() => {
+    const changedFieldPaths = Object.keys(
+      getObjectDifferences(previousFormValues.current, ctx.formValues),
+    )
+    previousFormValues.current = ctx.formValues
+
+    const changedDependency = changedFieldPaths.find((path) =>
+      isDependencyChange(path, ctx.fieldPath, code),
+    )
+    if (changedDependency) {
+      recomputeQueue.current?.schedule(changedDependency)
+    }
+  }, [ctx.formValues, ctx.fieldPath, code])
+
+  async function executeEditedCode() {
+    try {
+      setFieldValue(await executeComputedCode(ctx, codeValue))
+      setError(undefined)
+    } catch (caught) {
+      console.error(caught)
+      setError(getErrorMessage(caught))
+    }
+  }
 
   if (pluginParameters.hideField) {
     ctx.updateHeight(0)
@@ -93,7 +113,7 @@ export default function FieldExtension({ ctx }: Props) {
           <Button
             className={styles.button}
             buttonSize="s"
-            onClick={() => handleFieldValue(ctx, codeValue)}
+            onClick={executeEditedCode}
           >
             <span>Execute code</span>
           </Button>
@@ -101,6 +121,7 @@ export default function FieldExtension({ ctx }: Props) {
       )}
 
       <RenderResults fieldType={fieldType} value={fieldValue} />
+      {error && <FieldError>{error}</FieldError>}
     </Canvas>
   )
 }
