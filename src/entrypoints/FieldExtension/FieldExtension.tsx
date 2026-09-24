@@ -9,9 +9,10 @@ import executeComputedCode from '../../lib/executeComputedCode'
 import saveFieldValue from '../../lib/saveFieldValue'
 import getObjectDifferences from '../../lib/objectDifference'
 import isDependencyChange from '../../lib/isDependencyChange'
-import createRecomputeQueue, {
-  RecomputeQueue,
-} from '../../lib/createRecomputeQueue'
+import createRecomputeScheduler, {
+  Recompute,
+  RecomputeScheduler,
+} from '../../lib/createRecomputeScheduler'
 
 import styles from './FieldExtension.module.css'
 
@@ -20,10 +21,6 @@ export const RECOMPUTE_DELAY_MS = 300
 
 type Props = {
   ctx: RenderFieldExtensionCtx
-}
-
-function getErrorMessage(error: unknown) {
-  return error instanceof Error ? error.message : String(error)
 }
 
 export default function FieldExtension({ ctx }: Props) {
@@ -37,51 +34,56 @@ export default function FieldExtension({ ctx }: Props) {
   const [codeValue, setCodeValue] = useState<string>(code)
   const [error, setError] = useState<string>()
 
-  // Runs read the latest ctx, since the host pushes a new one on every form change.
+  // The host pushes a new ctx on every form change; recomputes read the latest one.
   const latestCtx = useRef(ctx)
   latestCtx.current = ctx
   const previousFormValues = useRef(ctx.formValues)
-  const recomputeQueue = useRef<RecomputeQueue<string>>()
+  const scheduler = useRef<RecomputeScheduler>()
+
+  function showError(caught: unknown) {
+    console.error(caught)
+    setError(caught instanceof Error ? caught.message : String(caught))
+  }
 
   useEffect(() => {
-    const queue = createRecomputeQueue<string>(
-      RECOMPUTE_DELAY_MS,
-      async (changedField, isSuperseded) => {
-        try {
-          const codeResult = await executeComputedCode(
-            latestCtx.current,
-            code,
-            changedField,
-          )
-          if (isSuperseded()) return
-          setFieldValue(codeResult)
-          setError(undefined)
-          saveFieldValue(latestCtx.current, codeResult)
-        } catch (caught) {
-          if (isSuperseded()) return
-          console.error(caught)
-          setError(getErrorMessage(caught))
-        }
-      },
-    )
-    recomputeQueue.current = queue
-    queue.schedule()
+    const recompute: Recompute = async (changedField, isOutdated) => {
+      try {
+        const result = await executeComputedCode(
+          latestCtx.current,
+          code,
+          changedField,
+        )
+        if (isOutdated()) return
+        setFieldValue(result)
+        setError(undefined)
+        saveFieldValue(latestCtx.current, result)
+      } catch (caught) {
+        if (isOutdated()) return
+        showError(caught)
+      }
+    }
 
-    return () => queue.dispose()
+    const newScheduler = createRecomputeScheduler(RECOMPUTE_DELAY_MS, recompute)
+    scheduler.current = newScheduler
+    // Compute once when the record opens.
+    newScheduler.schedule()
+
+    return () => newScheduler.stop()
     //eslint-disable-next-line
   }, [])
 
+  // Recompute when a field the code depends on changes.
   useEffect(() => {
-    const changedFieldPaths = Object.keys(
+    const changedPaths = Object.keys(
       getObjectDifferences(previousFormValues.current, ctx.formValues),
     )
     previousFormValues.current = ctx.formValues
 
-    const changedDependency = changedFieldPaths.find((path) =>
-      isDependencyChange(path, ctx.fieldPath, code),
+    const changedDependency = changedPaths.find((changedPath) =>
+      isDependencyChange(changedPath, ctx.fieldPath, code),
     )
     if (changedDependency) {
-      recomputeQueue.current?.schedule(changedDependency)
+      scheduler.current?.schedule(changedDependency)
     }
   }, [ctx.formValues, ctx.fieldPath, code])
 
@@ -90,8 +92,7 @@ export default function FieldExtension({ ctx }: Props) {
       setFieldValue(await executeComputedCode(ctx, codeValue))
       setError(undefined)
     } catch (caught) {
-      console.error(caught)
-      setError(getErrorMessage(caught))
+      showError(caught)
     }
   }
 
