@@ -1,5 +1,6 @@
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk'
 import getFieldValue from '../lib/getFieldValue'
+import createItemLoader from '../lib/createItemLoader'
 import { buildClient } from '@datocms/cma-client-browser'
 
 interface Variables {
@@ -22,10 +23,18 @@ export default async function executeComputedCode(
   const accessTokenError: string =
     'You need to give the plugin permission to use an access token'
 
-  const { currentUserAccessToken, environment } = ctx
+  const { currentUserAccessToken, environment, cmaBaseUrl } = ctx
   if (currentUserAccessToken) {
-    datoClient = buildClient({ apiToken: currentUserAccessToken, environment })
+    // Use the host's API, so the plugin also works against non-production CMS instances.
+    datoClient = buildClient({
+      apiToken: currentUserAccessToken,
+      environment,
+      baseUrl: cmaBaseUrl,
+    })
   }
+
+  // Batches the getModel calls a run makes in parallel into one request.
+  const loadItem = datoClient && createItemLoader(datoClient)
 
   function getUpload(uploadId: string) {
     if (!datoClient) {
@@ -42,7 +51,7 @@ export default async function executeComputedCode(
       return accessTokenError
     }
 
-    return datoClient.items.find(modelId)
+    return loadItem(modelId)
   }
 
   function getModelType(itemTypeId: string) {

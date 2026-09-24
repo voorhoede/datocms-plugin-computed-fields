@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Fixed
+- Recompute each field at most once per settled edit (300 ms debounce, one run at a time), instead of re-running on every re-render while a run is pending. This could exhaust the editor's API rate limit and slow down the whole CMS
+- A field's own write no longer re-triggers its code
+- Discard results of runs superseded by a newer edit
+- Show errors thrown by the field code in the field, and don't write a value, instead of re-running endlessly
+- Skip writing values that are already up to date
+- `getModel`, `getUpload` and `getModelType` call the CMA of the CMS instance the plugin runs in (`ctx.cmaBaseUrl`), instead of always calling `site-api.datocms.com`
+
+### Changed
+- `getModel` calls made in parallel (e.g. inside `Promise.all`) are sent as a single CMA request
+- When several dependencies change within the debounce window, the code runs once and `changedField` holds the path of the most recent one
+
 ## [2.7.0] - 2026-06-17
 ### Added
 - Dark mode support
