@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.7.1] - 2026-09-30
 ### Fixed
 - Recompute each field at most once per settled edit (300 ms debounce, one run at a time), instead of re-running on every re-render while a run is pending. This could exhaust the editor's API rate limit and slow down the whole CMS
 - A field's own write no longer re-triggers its code
@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Update all dependencies to their latest version
 
+[2.7.1]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/v2.7.0...v2.7.1
 [2.7.0]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/v2.6.0...v2.7.0
 [2.6.0]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/voorhoede/datocms-plugin-computed-fields/compare/v2.5.0...v2.5.1
